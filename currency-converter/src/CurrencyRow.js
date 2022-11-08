@@ -8,15 +8,18 @@ export default function CurrencyRow(props) {
     onChangeAmount,
     amount
   } = props
+
   return (
     <div>
-      <select className = 'dropdown' value={selectedCurrency} onChange={onChangeCurrency}>
-        {currencyOptions.map(option => (
-          <option key={option} value={option}>{option}</option>
-        ))}
-      </select>
-      <div>
-        <input className='converterInputStyle' type ='number' value={amount} onChange={onChangeAmount}/>
+      <div className='visualRows'>
+        <select className = 'dropdown' value={selectedCurrency} onChange={onChangeCurrency}>
+          {currencyOptions.map(option => (
+            <option key={option} value={option}>{option}</option>
+          ))}
+        </select>
+      </div>
+      <div className='visualRows1'>
+        <input className='converterInputStyle' type ='text' value={amount} onChange={onChangeAmount}/>
       </div>
     </div>
   )

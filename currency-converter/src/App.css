@@ -1,4 +1,28 @@
-body {
+.equalSign {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.title-top {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.visualRows {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.visualRows1 {
   margin: 0;
   display: flex;
   justify-content: center;
@@ -9,15 +33,110 @@ body {
 .blue-top {
   padding-top: 90px;
   background-image: linear-gradient(blue, white);
+  margin: auto;
+  display: auto;
+  justify-content: auto;
+  align-items: auto;
+  text-align: auto;
 }
 
 .dropdown {
   margin-right: 133px;
   font-size: large;
+  border-radius: 2px;
+  border-radius: 5px;
 }
 
 .converterInputStyle {
-  min-width: /*gotta look up how to get a percentage in here*/
+  margin-top: 7px;
+  border-radius: 2px;
+  border-radius: 5px;
+  padding: 3px;
+}
+
+.equalSign {
+  font-size: 2rem;
+  font-weight: bolder;
+}
+
+
+.grid-container {
+  display: grid;
+  grid-template-columns: auto;
+  width: 30%;
+  margin-top: 50px;
+  margin-left: 18%;
+}
+
+.grid-item {
+  border-top: 1px solid #dfdfdf;
+  border-bottom: 1px solid #dfdfdf;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  height: 24px;
+}
+
+.grid-container2 {
+  display: grid;
+  grid-template-columns: auto;
+  width: 20%;
+  margin-top: 50px;
+}
+
+.grid-item2 {
+  border-top: 1px solid #dfdfdf;
+  border-bottom: 1px solid #dfdfdf;
+}
+
+.grid-item3 {
+  border-top: 1px solid #dfdfdf;
+  border-bottom: 1px solid #dfdfdf;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  height: 24px;
+}
+
+.flex-container {
+    display: flex;
+}
+
+.grid-top {
+  position: absolute;
+  top: 340px;
+  left: 18%;
+}
+.grid-container {
+  padding-bottom: 30px;
+}
+.grid-container2 {
+  padding-bottom: 30px;
+}
+
+#GitHub{
+  position: absolute;
+  right: 2%;
+}
+
+#Indeed{
+  position: absolute;
+  right: 2%;
+  right: 100px;
+}
+
+.rounded {
+	padding: 15px;
+	margin-left: 5px;
+	background-color: rgba(200, 200, 200, 0.75);
+	color: black;
+  text-decoration-line: none;
+
+
+}
+
+.rounded:hover {
+	background-color: rgba(200, 200, 200, 0.9);
+	text-decoration: none;
+  text-decoration-line: none;
 }
 
 /*.App {

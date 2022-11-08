@@ -5,7 +5,8 @@ import CurrencyRow from './CurrencyRow';
 
 
 const BASE_URL = 'https://altexchangerateapi.herokuapp.com/latest?from=USD'
-const BASE_TYPES = 'https://altexchangerateapi.herokuapp.com/currencies'
+const BASE_URL_GRID = 'https://altexchangerateapi.herokuapp.com/latest?from=USD'
+/*const BASE_TYPES = 'https://altexchangerateapi.herokuapp.com/currencies'*/
 
 function App() {
   const [currencyOptions, setCurrencyOptions] = useState([])
@@ -14,8 +15,8 @@ function App() {
   const [exchangeRate, setExchangeRate] = useState()
   const [amount,setAmount] = useState(1)
   const [amountInFromCurrency, setAmountInFromCurrency] = useState(true)
-  const [newToExchangeRate, setNewToExchangeRate] = useState()
-  const [newFromExchangeRate, setNewFromExchangeRate] = useState()
+  const [gridFromCurrency, setGridFromCurrency]= useState()
+  const [gridExchangeRate, setGridExchangeRate]= useState([])
 
   let toAmount, fromAmount
   if (amountInFromCurrency) {
@@ -36,68 +37,60 @@ function App() {
         setFromCurrency(data.base)
         setToCurrency(firstCurrency)
         setExchangeRate(data.rates[firstCurrency])
+        setGridExchangeRate([(data.amount), ...Object.values(data.rates)])
+        setGridFromCurrency(data.base)
         console.log(data);
       })
   }, [])
 
-/*  useEffect(() => {
-    fetch(BASE_TYPES)
-      .then(res => res.json())
-      .then(data => console.log(data))
-  }, [])
-
   useEffect(() => {
-    fetch(BASE_URL)
-      .then(res => res.json())
-      .then(data => console.log(data))
-  }, [])*/
-
-  useEffect(() => {
-    if(fromCurrency != null && toCurrency != null) {
+    if(fromCurrency !== null && toCurrency !== null) {
       fetch(BASE_URL)
       .then(res => res.json())
       .then(data => {
         const currentToCurrency = toCurrency
         const currentFromCurrency = fromCurrency
 
-
-        if(fromCurrency == data.base) {
-          setNewFromExchangeRate(data.amount)
+        if(fromCurrency === data.base && toCurrency === data.base) {
+          setExchangeRate(data.amount/data.amount)
+        }
+        else if(fromCurrency === data.base && toCurrency !== data.base) {
+          setExchangeRate(data.rates[currentToCurrency]/data.amount)
+        }
+        else if(toCurrency === data.base && fromCurrency !== data.base) {
+          setExchangeRate(data.amount/data.rates[currentFromCurrency])
         }
         else {
-          setNewFromExchangeRate(data.rates[currentToCurrency])
+          setExchangeRate(data.rates[currentToCurrency]/data.rates[currentFromCurrency])
         }
-
-        if(toCurrency == data.base) {
-          setNewToExchangeRate(data.amount)
-        }
-        else {
-          setNewToExchangeRate(data.rates[currentToCurrency])
-        }
-
-
-        setNewToExchangeRate(data.rates[currentToCurrency])
-        setNewFromExchangeRate(data.rates[currentFromCurrency])
-        const currentExchangeRate = newToExchangeRate/newFromExchangeRate
-        setExchangeRate(data.rates[currentToCurrency]/data.rates[currentFromCurrency])
-
-
-        console.log(newFromExchangeRate);
-        console.log(newToExchangeRate);
-        console.log(currentExchangeRate);
-
-        console.log(currentFromCurrency);
-        console.log(fromCurrency);
-        console.log(currentToCurrency);
-        console.log(toCurrency);
-
-        console.log(exchangeRate);
       })
-      /*fetch(`${BASE_URL}?base=${fromCurrency}&symbols=${toCurrency}`)
-      .then(res => res.json())
-      .then(data => setExchangeRate(data.rates[toCurrency]))*/
     }
   }, [fromCurrency, toCurrency])
+
+
+  useEffect(() => {
+    fetch(BASE_URL)
+    .then(res => res.json())
+    .then(data => {
+      const listGridCurrency = [];
+      const defaultGridExchangeRate = [(data.amount), ...Object.values(data.rates)];
+      for (let i = 0; i < Object.keys(data.rates).length; i++) {
+        if (Object.keys(data.rates)[i] === gridFromCurrency) {
+          for(let j = 0; j < Object.keys(data.rates).length; j++) {
+            listGridCurrency.push(Math.round(Object.values(data.rates)[j] / Object.values(data.rates)[i] * 10000)/10000);
+          }
+          listGridCurrency.unshift(Math.round((data.amount)/Object.values(data.rates)[i] * 10000)/10000);
+          setGridExchangeRate(listGridCurrency);
+          console.log(gridExchangeRate);
+          console.log(listGridCurrency);
+        }
+        console.log(Object.keys(data.rates)[i]);
+      }
+      if ('USD' === gridFromCurrency) {
+        setGridExchangeRate(defaultGridExchangeRate);
+      }
+    })
+  }, [gridFromCurrency])
 
   function handleFromAmountChange(e) {
     setAmount(e.target.value)
@@ -109,24 +102,32 @@ function App() {
     setAmountInFromCurrency(false)
   }
 
+  function onChangeGridCurrency(e) {
+    setGridFromCurrency(e.target.value)
+  }
+
   return (
     <div className="App">
       {/*this is the little blue style at the top of the page*/}
       <div className="blue-top">
       </div>
+      <div className="link-to-portfolio">
+      </div>
       <div className="converter-top">
-        <div>
-          <h1>Converter</h1>
+        <div className='title-top'>
+          <h1>Currency Converter</h1>
         </div>
         <CurrencyRow
+        className=''
         currencyOptions={currencyOptions}
         selectedCurrency={fromCurrency}
         onChangeCurrency={e => setFromCurrency(e.target.value)}
         onChangeAmount={handleFromAmountChange}
         amount={fromAmount}
         />
-        <div>=</div>
+        <div className='equalSign'>=</div>
         <CurrencyRow
+        className=''
         currencyOptions={currencyOptions}
         selectedCurrency={toCurrency}
         onChangeCurrency={e => setToCurrency(e.target.value)}
@@ -134,7 +135,64 @@ function App() {
         amount={toAmount}
         />
       </div>
+      <div className="flex-container">
+        <div className='grid-top'>
+          <select className = 'dropdown' value={gridFromCurrency} onChange={onChangeGridCurrency}>
+            {currencyOptions.map(option => (
+              <option key={option} value={option}>{option}</option>
+            ))}
+          </select>
+        </div>
+        <div className="grid-container">
+         <p className="grid-item3">United States dollar</p>
+         <p className="grid-item3">Australian dollar</p>
+         <p className="grid-item3">Bulgarian lev</p>
+         <p className="grid-item3">Brazilian real</p>
+         <p className="grid-item3">Canadian dollar</p>
+         <p className="grid-item3">Swiss franc</p>
+         <p className="grid-item3">Chinese Renminbi</p>
+         <p className="grid-item3">Czech koruna</p>
+         <p className="grid-item3">Danish krone</p>
+         <p className="grid-item3">European Euro</p>
+         <p className="grid-item3">Great British Pound</p>
+         <p className="grid-item3">Hong Kong dollar</p>
+         <p className="grid-item3">Croatian kuna</p>
+         <p className="grid-item3">Hungarian forint</p>
+         <p className="grid-item3">Indonesian rupiah</p>
+         <p className="grid-item3">Israeli new shekel</p>
+         <p className="grid-item3">Indian rupee</p>
+         <p className="grid-item3">Icelandic króna</p>
+         <p className="grid-item3">Japanese yen</p>
+         <p className="grid-item3">South Korean won</p>
+         <p className="grid-item3">Mexican peso</p>
+         <p className="grid-item3">Malaysian ringgit</p>
+         <p className="grid-item3">Norwegian krone</p>
+         <p className="grid-item3">New Zealand dollar</p>
+         <p className="grid-item3">Philippine peso</p>
+         <p className="grid-item3">Polish złoty</p>
+         <p className="grid-item3">Romanian leu</p>
+         <p className="grid-item3">Swedish krona</p>
+         <p className="grid-item3">Singapore dollar</p>
+         <p className="grid-item3">Thai baht</p>
+         <p className="grid-item3">Turkish lira</p>
+         <p className="grid-item3">South African rand</p>
+        </div>
+        <div className="grid-container2">
+          {currencyOptions.map(option => (
+            <div className="grid-item"value={option}>{option}</div>
+          ))}
+        </div>
+        <div className="grid-container2">
+        {gridExchangeRate.map(option => (
+          <div className="grid-item2"value={option}>{option}</div>
+        ))}
+        </div>
+      </div>
+      <div>
+        <a href="https://github.com/NoPanicspicnic" class="rounded" id="GitHub"><span><i class="fab fa-github"></i>GitHub</span></a>
 
+        <a href="https://my.indeed.com/p/nicholase-n1qfg0r" class="rounded" id="Indeed"><span><i class="fas fa-info"></i>Indeed</span></a>
+      </div>
     </div>
   );
 }
