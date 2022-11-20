@@ -4,9 +4,9 @@ import './App.css';
 import CurrencyRow from './CurrencyRow';
 
 
-const BASE_URL = 'https://altexchangerateapi.herokuapp.com/latest?from=USD'
-const BASE_URL_GRID = 'https://altexchangerateapi.herokuapp.com/latest?from=USD'
-/*const BASE_TYPES = 'https://altexchangerateapi.herokuapp.com/currencies'*/
+const BASE_URL = 'https://www.frankfurter.app/latest?from=USD'
+const BASE_URL_GRID = 'https://www.frankfurter.app/latest?from=USD'
+/*const BASE_TYPES = 'https://www.frankfurter.app/currencies'*/
 
 function App() {
   const [currencyOptions, setCurrencyOptions] = useState([])
@@ -116,6 +116,9 @@ function App() {
       <div className="converter-top">
         <div className='title-top'>
           <h1>Currency Converter</h1>
+        </div>
+        <div>
+          <h3>By Nicholas Emmons</h3>
         </div>
         <CurrencyRow
         className=''

@@ -59,6 +59,10 @@
   font-weight: bolder;
 }
 
+h3 {
+  text-align: center;
+  margin-top: 0px;
+}
 
 .grid-container {
   display: grid;
