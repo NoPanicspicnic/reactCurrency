@@ -9,6 +9,7 @@ export default function CurrencyRow(props) {
     amount
   } = props
 
+
   return (
     <div>
       <div className='visualRows'>

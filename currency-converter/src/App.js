@@ -5,7 +5,7 @@ import CurrencyRow from './CurrencyRow';
 
 
 const BASE_URL = 'https://www.frankfurter.app/latest?from=USD'
-const BASE_URL_GRID = 'https://www.frankfurter.app/latest?from=USD'
+/*const BASE_URL_GRID = 'https://www.frankfurter.app/latest?from=USD'
 /*const BASE_TYPES = 'https://www.frankfurter.app/currencies'*/
 
 function App() {
@@ -18,14 +18,17 @@ function App() {
   const [gridFromCurrency, setGridFromCurrency]= useState()
   const [gridExchangeRate, setGridExchangeRate]= useState([])
 
-  let toAmount, fromAmount
-  if (amountInFromCurrency) {
-    fromAmount = amount
-    toAmount = amount * exchangeRate
-  }
-  else {
-    toAmount = amount
-    fromAmount = amount / exchangeRate
+  var toAmount = 1;
+  var fromAmount = 1;
+  if (exchangeRate !== undefined) {
+      if (amountInFromCurrency) {
+      fromAmount = amount
+      toAmount = amount * exchangeRate
+    }
+    else {
+      toAmount = amount
+      fromAmount = amount / exchangeRate
+    }
   }
 
   useEffect(() => {
@@ -39,12 +42,12 @@ function App() {
         setExchangeRate(data.rates[firstCurrency])
         setGridExchangeRate([(data.amount), ...Object.values(data.rates)])
         setGridFromCurrency(data.base)
-        console.log(data);
+        /*console.log(data);*/
       })
   }, [])
 
   useEffect(() => {
-    if(fromCurrency !== null && toCurrency !== null) {
+    if(fromCurrency !== undefined && toCurrency !== undefined) {
       fetch(BASE_URL)
       .then(res => res.json())
       .then(data => {
@@ -81,10 +84,10 @@ function App() {
           }
           listGridCurrency.unshift(Math.round((data.amount)/Object.values(data.rates)[i] * 10000)/10000);
           setGridExchangeRate(listGridCurrency);
-          console.log(gridExchangeRate);
-          console.log(listGridCurrency);
+          /*console.log(gridExchangeRate);*/
+          /*console.log(listGridCurrency);*/
         }
-        console.log(Object.keys(data.rates)[i]);
+        /*console.log(Object.keys(data.rates)[i]);*/
       }
       if ('USD' === gridFromCurrency) {
         setGridExchangeRate(defaultGridExchangeRate);
@@ -182,19 +185,19 @@ function App() {
         </div>
         <div className="grid-container2">
           {currencyOptions.map(option => (
-            <div className="grid-item"value={option}>{option}</div>
+            <div className="grid-item" key={option} value={option}>{option}</div>
           ))}
         </div>
         <div className="grid-container2">
         {gridExchangeRate.map(option => (
-          <div className="grid-item2"value={option}>{option}</div>
+          <div className="grid-item2" key={option} value={option}>{option}</div>
         ))}
         </div>
       </div>
       <div>
-        <a href="https://github.com/NoPanicspicnic" class="rounded" id="GitHub"><span><i class="fab fa-github"></i>GitHub</span></a>
+        <a href="https://github.com/NoPanicspicnic" className="rounded" id="GitHub"><span><i className="fab fa-github"></i>GitHub</span></a>
 
-        <a href="https://my.indeed.com/p/nicholase-n1qfg0r" class="rounded" id="Indeed"><span><i class="fas fa-info"></i>Indeed</span></a>
+        <a href="https://my.indeed.com/p/nicholase-n1qfg0r" className="rounded" id="Indeed"><span><i className="fas fa-info"></i>Indeed</span></a>
       </div>
     </div>
   );
