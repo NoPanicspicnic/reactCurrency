@@ -40,6 +40,10 @@
   text-align: auto;
 }
 
+#table-dropdown {
+  margin-top: 40px;
+}
+
 .dropdown {
   margin-right: 133px;
   font-size: large;

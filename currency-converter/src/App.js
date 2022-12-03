@@ -143,7 +143,7 @@ function App() {
       </div>
       <div className="flex-container">
         <div className='grid-top'>
-          <select className = 'dropdown' value={gridFromCurrency} onChange={onChangeGridCurrency}>
+          <select id = 'table-dropdown' className = 'dropdown' value={gridFromCurrency} onChange={onChangeGridCurrency}>
             {currencyOptions.map(option => (
               <option key={option} value={option}>{option}</option>
             ))}
@@ -196,7 +196,6 @@ function App() {
       </div>
       <div>
         <a href="https://github.com/NoPanicspicnic" className="rounded" id="GitHub"><span><i className="fab fa-github"></i>GitHub</span></a>
-
         <a href="https://my.indeed.com/p/nicholase-n1qfg0r" className="rounded" id="Indeed"><span><i className="fas fa-info"></i>Indeed</span></a>
       </div>
     </div>
